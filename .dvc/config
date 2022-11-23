@@ -1,0 +1,4 @@
+[core]
+    remote = storeage
+['remote "storeage"']
+    url = gdrive://1PM_NLCFgtBO9_boOLL0X07QNLb3arMwS
