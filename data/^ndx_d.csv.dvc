@@ -1,0 +1,4 @@
+outs:
+- md5: 59c1ad180df9f1dd18abe2cf0892750f
+  size: 489028
+  path: ^ndx_d.csv
