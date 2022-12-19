@@ -11,7 +11,8 @@ if __name__ == '__main__':
     # ,,all" - drop rows that consist of _only_ Nan values
     # ,,any" - drop rows that have _at least_ one Nan value
     matrix = matrix.dropna(how="any")
-
+    matrix = matrix.drop_duplicates() #some days were saved multiple times
+    matrix.to_csv('matrix.csv') #saves the matrix for further processing of data
     # print & plot some data!
     print(matrix)
 
