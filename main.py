@@ -1,5 +1,5 @@
 import dataPreprocessing as dpp
-import dateTimeWindows as dtw
+import dateTimeWindow2 as dtw
 from matplotlib import pyplot as plt
 global testing
 
