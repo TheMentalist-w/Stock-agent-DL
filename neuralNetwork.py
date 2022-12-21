@@ -15,7 +15,7 @@ class RNN:
             Embedding(input_dim = input_dim,            # rozmiar słownika eventów
                       input_length = input_length,      # liczba przypadków uczących
                       output_dim=100,                   # wymiarowość embeddingu
-                      trainable=False,                  # weights=[embedding_matrix] & mask_zero=True  wyrzuciłem, trainable = False, ponieważ -> https://datascience.stackexchange.com/questions/67801/using-trainable-true-in-keras-embedding-obtained-better-performance
+                      trainable=False,                  # trainable = False, ponieważ -> https://datascience.stackexchange.com/questions/67801/using-trainable-true-in-keras-embedding-obtained-better-performance
                       ))
 
         # Masking layer for pre-trained embeddings
