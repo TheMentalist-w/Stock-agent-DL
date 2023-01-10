@@ -2,6 +2,7 @@ import glob
 import pandas as pd
 import os
 import re
+import numpy as np
 
 
 def load_data(path="./data"):
@@ -70,4 +71,16 @@ def join_dataframes(dataframes_dict):
     res_df.set_index(["Date"], inplace=True)
 
     return res_df
+
+
+def create_x_y_datasets(input_array, steps_back=2):
+    x, y = [], []
+
+    _input = input_array.values
+
+    for i in range(steps_back, len(_input) - steps_back - 1):
+        x.append(_input[i:(i + steps_back), :])
+        y.append(_input[i + steps_back, : ])
+
+    return np.array(x), np.array(y)
 
