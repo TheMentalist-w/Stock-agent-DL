@@ -26,7 +26,3 @@ class RNN:
         self.model.compile(optimizer='adam', loss='binary_crossentropy')
 
         # TODO add earlystopping layer
-
-
-    def predict(self, sequence):
-        return self.model.predict(sequence)

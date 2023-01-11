@@ -69,11 +69,11 @@ if __name__ == '__main__':
     print(rnn.model.summary())
 
     early_stopping = EarlyStopping()  # can be customized, see https://keras.io/api/callbacks/early_stopping/
-    history = rnn.model.fit(X_train, y_train, epochs=30, validation_data=(X_test, y_test)) # TODO callbacks=[early_stopping]
+    history = rnn.model.fit(X_train, y_train, epochs=3, validation_data=(X_test, y_test)) # TODO callbacks=[early_stopping]
     plot_history(history)
 
     # Get exemplary prediction (list of probabilities of each event)
-    corr_probabilities = rnn.predict([X_test[0:20]])
+    corr_probabilities = rnn.model.predict([X_test[0:20]])
     corr_names_and_probabs = event_container.probabilities_to_ids_list(corr_probabilities[0], return_top=10)
 
     print("Predicted correlations in next timestep:")
