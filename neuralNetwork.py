@@ -20,10 +20,10 @@ class RNN:
         self.model.add(Dropout(0.5))
 
         # Output layer
-        self.model.add(Dense(n_features, activation='softmax'))  # self.model.add(Dense(n_features, activation='softmax'))
+        self.model.add(Dense(n_features, activation='sigmoid'))  # self.model.add(Dense(n_features, activation='softmax'))
 
         # Compile the model
-        self.model.compile(optimizer='adam', loss='categorical_crossentropy')
+        self.model.compile(optimizer='adam', loss='binary_crossentropy')
 
         # TODO add earlystopping layer
 

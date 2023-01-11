@@ -41,9 +41,9 @@ if __name__ == '__main__':
 
     xd = []
     for i in range(0, 1000, 1):  # TODO delete it later
-        if (i%10) ==1: xd.append([1,0,0,0])
-        elif (i%10) ==2: xd.append([0,1,0,0])
-        elif (i%10) ==3:xd.append([0,0,1,0])
+        if (i%10) ==1: xd.append([1,1,1,0])
+        elif (i%10) ==2: xd.append([1,0,0,0])
+        elif (i%10) ==3:xd.append([0,1,1,0])
         else: xd.append([0,0,0,1])
 
     train = pd.DataFrame(xd)
@@ -66,7 +66,7 @@ if __name__ == '__main__':
 
     # Get exemplary prediction (list of probabilities of each event)
     corr_probabilities = rnn.predict([x[0:20]])
-    corr_names_and_probabs = event_container.probabilities_to_ids_list(corr_probabilities[0], return_top=3)
+    corr_names_and_probabs = event_container.probabilities_to_ids_list(corr_probabilities[0], return_top=10)
 
     print("Predicted correlations in next timestep:")
     for name, p in corr_names_and_probabs:
