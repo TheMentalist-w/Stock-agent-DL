@@ -1,4 +1,4 @@
 outs:
 - md5: b691c0467e9c127cb1c958d53e52fe44
   size: 538551
-  path: xauusd_d.csv
+  path: XAU_USD.csv

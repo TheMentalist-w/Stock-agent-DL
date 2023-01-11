@@ -1,4 +1,4 @@
 outs:
 - md5: 8f87506b8e6b3a0673348b9baa0cef0b
   size: 336952
-  path: usdpln_d.csv
+  path: USD_PLN.csv

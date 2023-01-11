@@ -1,4 +1,4 @@
 outs:
 - md5: 80c1a9e7a480c77581c4b199da272702
   size: 343181
-  path: eurpln_d.csv
+  path: EUR_PLN.csv

@@ -1,4 +1,4 @@
 outs:
 - md5: d5a0549f0660337e21a5f52acbe1412c
   size: 345471
-  path: chfpln_d.csv
+  path: CHF_PLN.csv
