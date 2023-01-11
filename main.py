@@ -1,11 +1,9 @@
-from matplotlib import pyplot as plt
-
 import dataPreprocessing as dpp
 import dataProcessing as dp
 from neuralNetwork import *
 from sklearn.model_selection import train_test_split
 from helpers import *
-from keras.preprocessing.sequence import TimeseriesGenerator
+from tensorflow.keras.callbacks import EarlyStopping
 
 if __name__ == '__main__':
 
@@ -70,7 +68,8 @@ if __name__ == '__main__':
     rnn = RNN(n_samples=X_train.shape[0], n_timestamps=X_train.shape[1], n_features=X_train.shape[2])
     print(rnn.model.summary())
 
-    history = rnn.model.fit(X_train, y_train, epochs=3, validation_data=(X_test, y_test))
+    early_stopping = EarlyStopping()  # can be customized, see https://keras.io/api/callbacks/early_stopping/
+    history = rnn.model.fit(X_train, y_train, epochs=30, validation_data=(X_test, y_test)) # TODO callbacks=[early_stopping]
     plot_history(history)
 
     # Get exemplary prediction (list of probabilities of each event)
