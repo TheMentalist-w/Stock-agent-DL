@@ -23,6 +23,13 @@ def load_data(path="./data"):
             data["Data"] = pd.to_datetime(data["Data"])
             data = data.rename(columns={'Data': 'Date', 'Zamkniecie': 'Value'})
 
+        elif {"DATE", "DCOILBRENTEU"}.issubset(data.columns):
+            data = data[["DATE", "DCOILBRENTEU"]]
+            data["DATE"] = pd.to_datetime(data["DATE"])
+            data = data.rename(columns={'DATE': 'Date', 'DCOILBRENTEU': 'Value'})
+            data.drop(data[data.Value == "."].index, inplace=True)
+            data["Value"] = data["Value"].astype(float)
+
         elif {"Data", "Ostatnio"}.issubset(data.columns):
             data = data[["Data", "Ostatnio"]]
             data["Data"] = pd.to_datetime(data["Data"], format="%d.%m.%Y")
