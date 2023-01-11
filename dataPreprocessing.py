@@ -13,7 +13,6 @@ def load_data(path="./data"):
     """
 
     filepaths = glob.glob(f"{path}/*.csv")
-
     dataframes = {}
 
     for filepath in filepaths:

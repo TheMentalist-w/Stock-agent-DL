@@ -7,7 +7,6 @@ from neuralNetwork import *
 if __name__ == '__main__':
 
     dataframes = dpp.load_data("./data")  # load data from ./data directory
-    print(dataframes)
     matrix = dpp.join_dataframes(dataframes)  # join dataframes
     matrix = matrix.drop_duplicates()  # TODO
 
