@@ -3,6 +3,9 @@ from matplotlib import pyplot as plt
 import dataPreprocessing as dpp
 import dataProcessing as dp
 from neuralNetwork import *
+from sklearn.model_selection import train_test_split
+from helpers import *
+from keras.preprocessing.sequence import TimeseriesGenerator
 
 if __name__ == '__main__':
 
@@ -29,43 +32,49 @@ if __name__ == '__main__':
     # preparing data for training
     event_container = dp.EventContainer()
     event_container.fill(matrix, corr_thresh=0.98)
-    train = event_container.get_train_matrix(event_count_percentage=0.2)  # only events that occured in at least 10% days will be considered
+    bool_matrix = event_container.get_train_matrix(event_count_percentage=0.2)  # only events that occured in at least 10% days will be considered
 
-    print("Training dataset:")
-    print(train)
+    print("Binary rolling correlation matrix:")
+    print(bool_matrix)
 
-
-    # Just mock data for testing NN, will be deleted later
     """
+    # Just mock data for testing NN, will be deleted later
     import pandas as pd
 
     xd = []
     for i in range(0, 1000, 1):  # TODO delete it later
-        if (i%10) ==1: xd.append([1,1,1,0])
-        elif (i%10) ==2: xd.append([1,0,0,0])
-        elif (i%10) ==3:xd.append([0,1,1,0])
-        else: xd.append([0,0,0,1])
+        if (i % 10) == 1:
+            xd.append([1, 1, 1, 0])
+        elif (i % 10) == 2:
+            xd.append([1, 0, 0, 0])
+        elif (i % 10) == 3:
+            xd.append([0, 1, 1, 0])
+        else:
+            xd.append([0, 0, 0, 1])
 
-    train = pd.DataFrame(xd)
-    print("NEU")
-    print(train)
+    bool_matrix = pd.DataFrame(xd)
+    print("Mock matrix:")
+    print(bool_matrix)
     """
 
-    # splitting train dataset
+    # split dataset into train and test parts
+    train_matrix, test_matrix = train_test_split(bool_matrix, test_size=0.2, shuffle=False)
+
     # each row in X contains n=steps_back observations from the past,
     # each row in Y contains one observation following these n=steps_back observations from X
     steps_back = 64  # determine how many timestamps you'd like to pass to LSTM model at once
-    x, y = dpp.create_x_y_datasets(train, steps_back=steps_back)
+    X_train, y_train = dpp.create_x_y_datasets(train_matrix, steps_back=steps_back)
+    X_test, y_test = dpp.create_x_y_datasets(test_matrix, steps_back=steps_back)
 
     # Build and train nerual network
-    # train, test = train_test_split(train, test_size = 0.2, random_state = 42)
-    rnn = RNN(n_samples=len(train.index), n_timestamps=steps_back, n_features=len(train.columns))
+    rnn = RNN(n_samples=X_train.shape[0], n_timestamps=X_train.shape[1], n_features=X_train.shape[2])
     print(rnn.model.summary())
 
-    rnn.model.fit(x, y, epochs=10)
+    history = rnn.model.fit(X_train, y_train, epochs=3, validation_data=(X_test, y_test))
+    plot_history(history)
 
     # Get exemplary prediction (list of probabilities of each event)
-    corr_probabilities = rnn.predict([x[0:20]])
+    corr_probabilities = rnn.predict([X_test[0:20]])
     corr_names_and_probabs = event_container.probabilities_to_ids_list(corr_probabilities[0], return_top=10)
 
     print("Predicted correlations in next timestep:")
