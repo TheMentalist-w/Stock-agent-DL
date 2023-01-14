@@ -2,8 +2,11 @@ import dataPreprocessing as dpp
 import dataProcessing as dp
 from neuralNetwork import *
 from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import GridSearchCV
 from helpers import *
 from tensorflow.keras.callbacks import EarlyStopping
+import pandas as pd
 
 if __name__ == '__main__':
 
@@ -34,6 +37,26 @@ if __name__ == '__main__':
 
     print("Binary rolling correlation matrix:")
     print(bool_matrix)
+
+    # create dataframe for every material (bool_matrix + gain(1)/loss(-1))
+    trees_data = dict.fromkeys(dataframes.keys(), None)
+    for material in trees_data.keys():
+        trees_data[material] = dp.binary_gain_loss(bool_matrix, matrix[material])
+
+    # create and train decision trees for every material
+    trees = dict.fromkeys(dataframes.keys(), None)
+    parameters = {'max_depth': range(5, 15)}
+    for tree in trees.keys():
+        # X_train, X_test, y_train, y_test = train_test_split(bool_matrix, trees_data[tree], test_size=0.2, shuffle=True,
+        #                                          stratify=trees_data[tree])
+        print(tree)
+        clf = GridSearchCV(DecisionTreeClassifier(), parameters, n_jobs=4)
+        clf.fit(X=bool_matrix, y=trees_data[tree])
+        # tree_model = clf.best_estimator_
+        trees[tree] = clf.best_estimator_
+        # trees[tree] = DecisionTreeClassifier()
+        # trees[tree].fit(X_train, y_train)
+
 
     """
     # Just mock data for testing NN, will be deleted later
@@ -79,3 +102,12 @@ if __name__ == '__main__':
     print("Predicted correlations in next timestep:")
     for name, p in corr_names_and_probabs:
         print("\t" + "(*) " + name + " with p=" + str(round(100 * p, 2)) + "%")
+
+    # threshold for predicted correlation
+    thresholded_corr = [1 if p > 0.5 else 0 for name, p in corr_names_and_probabs]
+    input = pd.DataFrame([thresholded_corr], columns=bool_matrix.columns)
+    print(input)
+    gain_los = dict.fromkeys(trees.keys(), None)
+    for tree in trees.keys():
+        gain_los[tree] = trees[tree].predict(input)
+    print(gain_los)

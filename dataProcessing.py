@@ -40,8 +40,8 @@ class EventContainer:
 
         # create training matrix; in columns there are dates, in rows '1' if givren event occurred, '0' otherwise
         res = pd.DataFrame(
-            index=self.get_available_values("event_dates"),
-            columns=self.get_available_values("event_ids")
+            index=list(self.get_available_values("event_dates")),
+            columns=list(self.get_available_values("event_ids"))
         )
 
         ids = [event.ID for event in self.get_available_values("events")]
@@ -65,7 +65,8 @@ class EventContainer:
 
     def probabilities_to_ids_list(self, input_list, return_top=5):
         ids_and_probs = [(self.one_hot_to_ids[i], value) for i, value in enumerate(input_list)]
-        return list(sorted(ids_and_probs, key=lambda x: x[1], reverse=True))[:return_top]
+        return ids_and_probs
+        # return list(sorted(ids_and_probs, key=lambda x: x[1], reverse=True))[:return_top]
 
 
 class Event:
@@ -78,3 +79,11 @@ class Event:
     @property
     def ID(self):
         return self.var_1 + ";" + self.var_2
+
+def binary_gain_loss(bool_matrix, material_data):
+    loss_gain = []
+    for idx, row in bool_matrix.iterrows():
+        future_value = material_data.loc[idx:].head(2).iloc[-1]
+        previous_value = material_data.loc[:idx].tail(5).iloc[0]
+        loss_gain.append(-1 if future_value < previous_value else 1)
+    return pd.Series(loss_gain)
