@@ -2,6 +2,7 @@ from matplotlib import pyplot as plt
 
 import dataPreprocessing as dpp
 import dataProcessing as dp
+import dataTransformer as dt
 from neuralNetwork import *
 
 if __name__ == '__main__':
@@ -25,15 +26,17 @@ if __name__ == '__main__':
 
     plt.legend()
     plt.savefig("example.png")
-
+    dt.Transformer(matrix)
     # preparing data for training
-    event_container = dp.EventContainer()
+    #event_container = dp.EventContainer()
+    """
+    event_container = dt.EventContainer()
     event_container.fill(matrix, corr_thresh=0.98)
     train = event_container.get_train_matrix(event_count_percentage=0.2)  # only events that occured in at least 10% days will be considered
 
     print("Training dataset:")
     print(train)
-
+    """
 
     # Just mock data for testing NN, will be deleted later
     """
@@ -50,7 +53,7 @@ if __name__ == '__main__':
     print("NEU")
     print(train)
     """
-
+    """
     # splitting train dataset
     # each row in X contains n=steps_back observations from the past,
     # each row in Y contains one observation following these n=steps_back observations from X
@@ -71,3 +74,4 @@ if __name__ == '__main__':
     print("Predicted correlations in next timestep:")
     for name, p in corr_names_and_probabs:
         print("\t" + "(*) " + name + " with p=" + str(round(100 * p, 2)) + "%")
+"""
