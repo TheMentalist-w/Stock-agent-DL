@@ -80,7 +80,7 @@ def create_x_y_datasets(input_array, steps_back=2):
 
     for i in range(steps_back, len(_input) - steps_back - 1):
         x.append(_input[i:(i + steps_back), :])
-        y.append(_input[i + steps_back, : ])
+        y.append(_input[i + steps_back, : ,])
 
     return np.array(x), np.array(y)
 
