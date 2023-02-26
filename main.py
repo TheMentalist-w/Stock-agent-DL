@@ -29,14 +29,17 @@ if __name__ == '__main__':
     dt.Transformer(matrix)
     # preparing data for training
     #event_container = dp.EventContainer()
-    """
-    event_container = dt.EventContainer()
-    event_container.fill(matrix, corr_thresh=0.98)
-    train = event_container.get_train_matrix(event_count_percentage=0.2)  # only events that occured in at least 10% days will be considered
 
+    df_train,df_val,df_test = dt.Transformer(matrix)
+    #event_container.fill(matrix, corr_thresh=0.98)
+    #train = event_container.get_train_matrix(event_count_percentage=0.2)  # only events that occured in at least 10% days will be considered
+    steps_back = 64 #TODO-find a possibly better num for transformer
+    X_train, y_train = dpp.create_x_y_datasets(df_train, steps_back=steps_back)
+    X_val, y_val = dpp.create_x_y_datasets(df_val, steps_back=steps_back)
+    X_test, y_test = dpp.create_x_y_datasets(df_test, steps_back=steps_back)
     print("Training dataset:")
-    print(train)
-    """
+    #print(train)
+
 
     # Just mock data for testing NN, will be deleted later
     """
